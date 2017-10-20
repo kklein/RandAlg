@@ -1,0 +1,62 @@
+
+\documentclass[a4paper,german]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bbm}
+
+
+%This is how you can create a "claim"-environment (or a lemma/Theorem/definition etc environment)
+\newtheorem{claim}{Claim}
+
+%This is how you can create a command of your own, e.g. to simplify the usage signs you often use.
+\newcommand{\E}{\mathbb{E}}
+
+%Titlepage:
+\title{Randomized Algorithms and Probabilistic Methods: Graded Homework 1}
+\author{ Kevin Klein, list of collaborators}
+\date{October 23rd 2017}
+
+
+\begin{document}
+\maketitle
+
+\section*{Exercise 1}
+Let's define \(C = \bigcup_{v} C_v\). If we can find a partition \(C = C_A \cup C_B\) such that \(\forall v \in A: C_v \cap C_A \neq \emptyset \) and \(\forall v \in B: C_v \cap C_B \neq \emptyset \), we have found a trivial admissable coloring. The admissable coloring could be constructed by coloring each node with an arbitrary color from said intersection.
+We now want to show that, given the minimal length of \(C_v\), a random partitioning can lead to an admissable coloring. \\
+
+We assign each \(c \in C\) to either \(C_A\) or \(C_B\) u.a.r. This is a partition as every color is assigned to exactly one set. 
+When inspecting node \(v \in A\), we define \emph{success} to be the existence of \(c \in C_V \cap C_A \neq \emptyset\). The case for which \(v \in B\) follows by symmetry. Success for all nodes implies that each node can chose a color which is not chosen in the class containing its neighboring nodes, i.e. there is an admissable coloring. 
+
+\begin{align*} X_i &= \text{\emph{success} for node } i  \\
+&= \mathbbm{1}[C_i \cap C_{class(i)} \neq \emptyset] \\
+\Pr[X_i] &= 1 - \Pr[\text{all } c \in C_i \text{ have been mapped to } C - C_{class(i)}] \\
+ &= 1 - \frac{1}{{2}^{|C_i|}} \\
+ X &= \text{\#\emph{successes} among all } 2n \text{ nodes}\\
+ &= \sum_{i=1}^{2n} X_i \\
+ \mathbb{E}[X] &= \mathbb{E}[\sum_{i=1}^{2n} X_i ]\\
+ &= \sum_{i=1}^{2n} \mathbb{E}[X_i ] \text{ by linearity of expectation} \\
+ &=  \sum_{i=1}^{2n} \Pr[X_i ] \\
+&=  \sum_{i=1}^{2n} (1 - \frac{1}{{2}^{|C_i|}}) \\
+\end{align*}
+
+We can now make use of our knowledge about the size of each \(C_v\).
+
+\begin{align*}
+|C_v| > log_2n + 1 &\Rightarrow \frac{1}{{2}^{|C_v|}} < \frac{1}{{2}^{log_2n + 1}} = \frac{1}{2n}\\
+&\Rightarrow 1 - \frac{1}{{2}^{|C_v|}} > 1 - \frac{1}{2n} \\
+\end{align*}
+
+We can now use this this bound to reformulate the expectation.
+
+\begin{align*} \mathbb{E}[X] &> \sum_{i=1}^{2n}  (1 - \frac{1}{2n})  \\
+&> 2n(1 - \frac{1}{2n} ) \\
+&> 2n - 1 \\
+\end{align*}
+By the probabilistic method, there has to be at least one realistion of \(X\) attaining value at least \(2n\).  The latter implies \emph{success} for each node, which, as we have argues, implies the existence of an admissable coloring.
+
+\section*{Exercise 2}
+
+
+\end{document}
