@@ -177,6 +177,44 @@ X &= \sum_{i=1}^{n-1} X_i \\
 \end{align*}
 Hence we have shown that \( \mathbb{E}[X] \in \Omega(2^n) \).
 \item
+The probability that a guess \(g \in_{u.a.r.} \{1 \dots  n\}^n\) is a radom guess:
+$$ \Pr[t(a,g) = 0] = (\frac{n-1}{n})^n $$
+Thusly \(c\cdot e \cdot nlog(n)\) guesses lead to \(c\cdot e \cdot nlog(n)  (\frac{n-1}{n})^n \) zero-guesses in expecation. We observe that:
+$$ \lim_{n \to \infty}  (\frac{n-1}{n})^n =  \lim_{m \to \infty}  (\frac{1}{1 + \frac{1}{m}})^m \to \frac{1}{e}$$
+Therefore, for large enough \(n\), we can expect  \(c\cdot e \cdot nlog(n)  \cdot e  = c \cdot nlog(n)\) many zero-guesses.
+
+Encountering for each position, each possible code \(c \neq a_i\) as part of a zero-guess implies being able to determine Paul's codeword without any further guesses, as we know for each position the \(n-1\) that cannot be part of the actual code. This leaves only one possible code per position, i.e. the sough-after codeword. Our aim is now to show that the former statement holds whp.
+
+Let's show that each zero-guess is ind. of each other.
+TODO
+
+We will calculate a convenient limit first.
+\begin{align*}
+&\lim_{n \to \infty} (\frac{n-2}{n-1})^{c \cdot nlog(n)} \\
+&= \lim_{m \to \infty} (\frac{m}{m+1})^{c \cdot (m+2)log(m+2)} \\ 
+&=  \lim_{m \to \infty} ((\frac{1}{1 + \frac{1}{m}})^m(\frac{1}{1 + \frac{1}{m}})^2)^{log(m+2)} \\
+&= \lim_{m \to \infty} (\frac{1}{e} \cdot 1)^{log(m+2)} \label{eq3}\\
+& \to 0
+\end{align*}
+\begin{align*}
+\Pr[X_p] &= \Pr[\text{for position } p \text{ each } c_i \neq a_p \text{ has been drawn among } k \text{ zero-guesses, drawn u.a.r.}] \\
+&= 1 - \Pr[\text{for position } p \text{ some } c_i \neq a_p \text{ has not been drawn among } k \text{ zero-guesses, drawn u.a.r.}] \\
+&= 1 - (\frac{n-2}{n-1})^k \\
+&\to 1 \text{ (with large enough } n, k = c \cdot nlog(n) \text{ and } \ref{eq3} \text{)}
+\end{align*}
+We will now show that each position is indepdendent of each other.
+
+
+\begin{align*}
+&\Pr[\text{for each position } p \text{ each } c_i \neq a_p \text{ has been drawn among } k \text{ zero-guesses, drawn u.a.r.}] \\
+&= \prod_{p = 1}^n \Pr[X_p] \\
+&= (1 - (\frac{n-2}{n-1})^k)^n \text{ (via independence of positions)} \\
+&\to 1 \text{ (via the previous limit)}
+\end{align*}
+
+Summing up, we have established that we can expect \(c'\cdot log(n) \) many zero-guesses from \(c'\cdot e \cdot log(n)\) total guesses, which are sufficient to determine to codeword whp.
+
+
 \item
 \item
 \end{enumerate}
