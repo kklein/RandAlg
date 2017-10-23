@@ -15,7 +15,7 @@
 
 %Titlepage:
 \title{Randomized Algorithms and Probabilistic Methods: Graded Homework 1}
-\author{ Kevin Klein, list of collaborators}
+\author{ Kevin Klein, collaborators: Ramon Braunwarth, Fabian Gerhardt}
 \date{October 23rd 2017}
 
 
@@ -24,7 +24,7 @@
 
 \section*{Exercise 1}
 Let's define \(C = \bigcup_{v} C_v\). If we can find a partition \(C = C_A \cup C_B\) such that \(\forall v \in A: C_v \cap C_A \neq \emptyset \) and \(\forall v \in B: C_v \cap C_B \neq \emptyset \), we have found a trivial admissable coloring. The admissable coloring could be constructed by coloring each node with an arbitrary color from said intersection.
-We now want to show that, given the minimal length of \(C_v\), a random partitioning can lead to an admissable coloring. \\
+We now want to show that given the minimal length for \(C_v\), a random partitioning can lead to an admissable coloring. \\
 
 We assign each \(c \in C\) to either \(C_A\) or \(C_B\) u.a.r. This is a partition as every color is assigned to exactly one set. 
 When inspecting node \(v \in A\), we define \emph{success} to be the existence of \(c \in C_V \cap C_A \neq \emptyset\). The case for which \(v \in B\) follows by symmetry. Success for all nodes implies that each node can chose a color which is not chosen in the class containing its neighboring nodes, i.e. there is an admissable coloring. 
@@ -94,7 +94,7 @@ Firstly, let's demonstrate a useful inequality.
 & \Rightarrow \frac{2ln(n)}{n^2} \leq \frac{1}{2}\\
 & \Rightarrow (1-\epsilon) \frac{2ln(n)}{n^2} \leq \frac{1}{2}\\
 \end{align*}
-text text
+
 \begin{align*}
 \lim_{n \to \infty} \mathbb{E}[X] &= \lim_{n \to \infty} n (1-p)^ {{n-1} \choose {2}} \\
 &\geq \lim_{n \to \infty} n e^{-p(1 - p) \frac{(n-1)(n-2)}{2}}   & \text{(via Fact 2, as } 0 \leq p \leq \frac{1}{2} \text{)}\\
@@ -107,10 +107,10 @@ We observe that
 Hence:
 
 \begin{align*}
-\lim_{n \to \infty} \mathbb{E}[X] &\geq \lim_{n \to \infty} n n^{-(1 - \epsilon)} \to \infty\\
+\lim_{n \to \infty} \mathbb{E}[X] &\geq \lim_{n \to \infty} n n^{-(1 - \epsilon)} \to \infty
 \end{align*}
 
-In order to compute the variance, let's first have a look at the provavility of two distinct nodes \(i\) and \(j\) being isolated at the same time. All edges that would either involve i and j must not be added. To avoid double-counting, we shall not forget to take the edges containing both i and j into consideration.
+In order to compute the variance, let's first have a look at the probavility of two distinct nodes \(i\) and \(j\) being isolated at the same time. All edges that would either involve i and j must not be added. To avoid double-counting, we shall not forget to take the edges containing both i and j into consideration.
 
 \begin{align}
 \Pr[i \text{ and } j \text{ are isolated}] &= (1-p)^{ {{n-1} \choose {2}} + {{n-1} \choose {2}} - {{n-2} \choose {1}} } \nonumber\\ 
@@ -164,6 +164,33 @@ Summing up, we have:
 which corresponds to the definition of a sharp threshold.
 
 \section*{Exercise 3}
+\begin{enumerate}
+\item
+We draw \(n^\frac{1}{4}\) vertices u.a.r. from \(V\). We observe that per edge, there are at most \(n-1\) conflicting edges, i.e. edges with the same color. This follows directly from the fact that each node can have at most one edge of the same color.  In total, there are at most \( n{{n}\choose{2}} \) possible pairs of conflicting edges. The probability of drawing two conflicting edges is equal to the probability of choosing the four nodes of the two edges. The two edges cannot be conflicting by drawing less than 4 nodes, because that would imply an improper edge-coloring.
+\begin{align*}
+\mathbb{E}[\#\text{conflicting edge pairs}] &= \mathbb{E}[\sum_{i=1}^{n{{n}\choose{2}}} \mathbbm{1} [\text{pair } i \text{ is drawn}]]\\
+&\leq \sum_{i=1}^{n{{n}\choose{2}}}  \mathbb{E} [\mathbbm{1} [\text{pair } i \text{ is drawn}]] \text{ (by linearity of expectation)} \\
+& \leq  \sum_{i=1}^{n{{n}\choose{2}}}  \Pr [\text{pair } i \text{ is drawn}] \\
+& \leq  \sum_{i=1}^{n{{n}\choose{2}}}  \Pr [\text{the four nodes connecting the edges are drawn}] \\
+&\leq \sum_{i=1}^{n{{n}\choose{2}}}  (\frac{n^\frac{1}{4}}{n})^4 \text{ (independece of node-draws)}\\
+& \leq n{{n}\choose{2}} \frac{1}{n^3} = \frac{n^2(n-1)}{2} \frac{1}{n^3} \\
+& < 1
+\end{align*} 
+As the number of conflicting edge pairs is a non-negative integer, there needs to be a scenario in which it takes on the value 0. This concludes the proof.
+\item
+We draw \(log(n)\) nodes u.a.r. from \(V\) into \(A\) and \(Cn/log(n)\) nodes u.a.r. into \(F\). The number of possible conflicting pairs can now be bounded by the number of possible edges and the number of times a color can appear in the graph, i.e. \( {{n} \choose {2}} \frac{n}{log(n)^3}\).It is essential to observe that a pair of potentially conflicting edges have to have at least two nodes inside of \(A\) and they all need to be not part of \(F\). 
+\begin{align*}
+&\mathbb{E}[\#\text{ conflicting pairs}] \\
+&\leq \mathbb{E}[\sum_{i=1}^{{{n} \choose {2}} \frac{n}{log(n)^3}} \mathbbm{1}[\text{pair } i \text{ is in H}]\\
+&\leq \sum_{i=1}^{{{n} \choose {2}} \frac{n}{log(n)^3}} \Pr[\text{all nodes from } i \text{ are not in } F \text{and at least two in } A]\\
+&\leq {{n} \choose {2}} \frac{n}{log(n)^3} (1 - \frac{C\cdot n/log(n)}{n})^2 (\frac{log(n)}{n})^4 \\
+&\leq {{n} \choose {2}} \frac{n}{log(n)^3} \cdot 1 \cdot  (\frac{log(n)}{n})^4 \\
+&\leq \frac{n^3}{log(n)^3} \frac{log(n)^4}{n^4} \\
+&\leq \frac{log(n)}{n} \\
+&< 1
+\end{align*}
+As the number of conflicting edge pairs is a non-negative integer, there needs to be a scenario in which it takes on the value 0. This concludes the proof.
+\end{enumerate}
 \section*{Exercise 4}
 \begin{enumerate}
 \item
@@ -176,46 +203,65 @@ X &= \sum_{i=1}^{n-1} X_i \\
 &\geq \sum_{i=n-2}^{n-2} (\frac{n-i}{n-i-1})^n = (\frac{2}{1})^n
 \end{align*}
 Hence we have shown that \( \mathbb{E}[X] \in \Omega(2^n) \).
+
+
 \item
 The probability that a guess \(g \in_{u.a.r.} \{1 \dots  n\}^n\) is a radom guess:
 $$ \Pr[t(a,g) = 0] = (\frac{n-1}{n})^n $$
-Thusly \(c\cdot e \cdot nlog(n)\) guesses lead to \(c\cdot e \cdot nlog(n)  (\frac{n-1}{n})^n \) zero-guesses in expecation. We observe that:
+Thusly \(C\cdot e \cdot nlog(n)\) guesses lead to \(C\cdot e \cdot nlog(n)  (\frac{n-1}{n})^n \) zero-guesses in expecation. We observe that:
 $$ \lim_{n \to \infty}  (\frac{n-1}{n})^n =  \lim_{m \to \infty}  (\frac{1}{1 + \frac{1}{m}})^m \to \frac{1}{e}$$
-Therefore, for large enough \(n\), we can expect  \(c\cdot e \cdot nlog(n)  \cdot e  = c \cdot nlog(n)\) many zero-guesses.
+Therefore, for large enough \(n\), we can expect  \(C\cdot e \cdot nlog(n)  \cdot e  = C \cdot nlog(n)\) many zero-guesses.  Note that the Chernoff Bounds tell us that the probability of the number of zero-guesses deviating from the just established mean decreases exponentialy.
+Encountering for each position, each possible code \(c \neq a_i\) as part of a zero-guess implies being able to determine Paul's codeword without any further guesses. In such a scenario we know for each po2sition the \(n-1\) codes that cannot be part of the correct code. This leaves only one possible code per position, i.e. the sough-after code. Our aim is now to show that the former statement holds whp.
 
-Encountering for each position, each possible code \(c \neq a_i\) as part of a zero-guess implies being able to determine Paul's codeword without any further guesses, as we know for each position the \(n-1\) that cannot be part of the actual code. This leaves only one possible code per position, i.e. the sough-after codeword. Our aim is now to show that the former statement holds whp.
-
-Let's show that each zero-guess is ind. of each other.
-TODO
+At this point, we want to point out that the guess for a position i is independent of the guesses for all other positions. At the same time, the zero guesses are independent of each other. Both those observations follow directly from the fact that the initial guesses are indepenently and u.a.r. drawn from \(\{1\dots n\}^n\).
 
 We will calculate a convenient limit first.
 \begin{align*}
-&\lim_{n \to \infty} (\frac{n-2}{n-1})^{c \cdot nlog(n)} \\
-&= \lim_{m \to \infty} (\frac{m}{m+1})^{c \cdot (m+2)log(m+2)} \\ 
-&=  \lim_{m \to \infty} ((\frac{1}{1 + \frac{1}{m}})^m(\frac{1}{1 + \frac{1}{m}})^2)^{log(m+2)} \\
-&= \lim_{m \to \infty} (\frac{1}{e} \cdot 1)^{log(m+2)} \label{eq3}\\
-& \to 0
+&\lim_{n \to \infty}(n-1) (\frac{n-2}{n-1})^{C \cdot nlog(n)} \\
+&= \lim_{m \to \infty}(m+1) (\frac{m}{m+1})^{C (m+2)log(m+2)} \\ 
+&=  \lim_{m \to \infty} (m+1)((\frac{1}{1 + \frac{1}{m}})^m(\frac{1}{1 + \frac{1}{m}})^2)^{C \cdot log(m+2)} \\
+&= \lim_{m \to \infty} (m+1)(\frac{1}{e} \cdot 1)^{C \cdot log(m+2)} \\
+&= \lim_{m \to \infty} (m+1)(\frac{1}{m+2})^C \\
+& \to 0   & \text{ (for } C > 1 \text{)}
 \end{align*}
 \begin{align*}
 \Pr[X_p] &= \Pr[\text{for position } p \text{ each } c_i \neq a_p \text{ has been drawn among } k \text{ zero-guesses, drawn u.a.r.}] \\
 &= 1 - \Pr[\text{for position } p \text{ some } c_i \neq a_p \text{ has not been drawn among } k \text{ zero-guesses, drawn u.a.r.}] \\
-&= 1 - (\frac{n-2}{n-1})^k \\
-&\to 1 \text{ (with large enough } n, k = c \cdot nlog(n) \text{ and } \ref{eq3} \text{)}
+&\geq 1 - \sum_{c_i = 1, c_i \neq a_p}^n \Pr[\text{for position } p,  c_i  \text{ has not been drawn among } k \text{ zero-guesses, drawn u.a.r.}]\\
+& \text{(via union bound)} \\
+&\geq 1 - (n-1)(\frac{n-2}{n-1})^k \\
+&\to 1 \text{ (with large enough } n, k = C \cdot nlog(n), C > 1 \text{ and } \text{)}
 \end{align*}
-We will now show that each position is indepdendent of each other.
-
 
 \begin{align*}
 &\Pr[\text{for each position } p \text{ each } c_i \neq a_p \text{ has been drawn among } k \text{ zero-guesses, drawn u.a.r.}] \\
 &= \prod_{p = 1}^n \Pr[X_p] \\
-&= (1 - (\frac{n-2}{n-1})^k)^n \text{ (via independence of positions)} \\
+&= (1 - (n-1)(\frac{n-2}{n-1})^k)^n \text{ (via independence of positions)} \\
 &\to 1 \text{ (via the previous limit)}
 \end{align*}
 
-Summing up, we have established that we can expect \(c'\cdot log(n) \) many zero-guesses from \(c'\cdot e \cdot log(n)\) total guesses, which are sufficient to determine to codeword whp.
-
+Summing up, we have established that we can expect \(C\cdot log(n) \) many zero-guesses from \(C\cdot e \cdot log(n)\) total guesses, which are sufficient to determine the codeword whp.
 
 \item
+Our strategy is to run the algorithm \(\mathcal{A}\) from 4.2  \(C\cdot nlog(n) \) many times. We can easily check whether we have found the codeword that way. If not, which is very unlikely, we run a trivial deterministic algorithm. 
+The deterministic algorithm iterates over all positions and tests all colors per position, all other colors fixed. This has runtime \( O (n^2) \).
+Hence our total runtime is:
+$$ \Pr[ \mathcal{A} \text{ is successful}] \cdot C \cdot n log(n)+ (1 - \Pr[ \mathcal{A} \text{ is successful}] ) \cdot C' \cdot n^2$$
+\begin{align*}
+&1 - \Pr[ \mathcal{A} \text{ is successful}] \\
+&= \Pr[\text{at least one } c \neq a_i \text{ has not been drawn among } C \cdot nlog(n) \text{ guesses}] \\
+&\leq n(n-1)(\frac{n-2}{n-1})^{C \cdot nlog(n)} \text{ (by union bound over positions and different} c \text{)} \\
+&\leq n(n-1)(1 - \frac{1}{n-1})^{C \cdot nlog(n)} \\
+&\leq n(n-1)(e^{- \frac{1}{n-1}})^{C \cdot nlog(n)} \text{ (by Fact 1)} \\
+&\leq n(n-1)n^{-\frac{C\cdot n}{n-1}} 
+\end{align*}
+Combining this with our runtime:
+\begin{align*}
+(1 - \Pr[ \mathcal{A} \text{ is successful}] ) \cdot C' \cdot n^2 &\leq C' \cdot n^3 (n-1) n^{-\frac{C\cdot n}{n-1}} \\
+&\leq C' \cdot n^4 n^{-C}
+\end{align*}
+Clearly, if we choose \(C\) to be large, i.e. \(> 4\), this term quickly tends to zero. Hence the only term left in our runtime estimation is a constant factor of \(n log(n)\). Thereby the expected runtime of this algorithm is in \(O(nlog(n))\). 
 \item
+
 \end{enumerate}
 \end{document}
