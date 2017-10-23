@@ -163,5 +163,21 @@ Summing up, we have:
 
 which corresponds to the definition of a sharp threshold.
 
-
+\section*{Exercise 3}
+\section*{Exercise 4}
+\begin{enumerate}
+\item
+Having \(i\) elements already in her list per position, the probability of Alice's next guess being a zero-guess is \((\frac{n-i-1}{n-i})^n\). We now denote \(X_i \) to be the number of guesses required to obtain the \(i\)th zero-guess. Observe that this expectation is the inverse of the the latter probability. \(X\) will be refered to as the number of required guesses to arrive at the last, i.e. \(n-1\)th zero-guess.
+\begin{align*}
+X &= \sum_{i=1}^{n-1} X_i \\
+\mathbb{E}[X] &= \mathbb{E}[\sum_{i=1}^{n-1} X_i ]\\
+&= \sum_{i=1}^{n-1} \mathbb{E}[X_i] & \text{(by linearity of expectation)} \\
+&= \sum_{i=0}^{n-2}\frac{1}{ (\frac{n-i-1}{n-i})^n}\\
+&\geq \sum_{i=n-2}^{n-2} (\frac{n-i}{n-i-1})^n = (\frac{2}{1})^n
+\end{align*}
+Hence we have shown that \( \mathbb{E}[X] \in \Omega(2^n) \).
+\item
+\item
+\item
+\end{enumerate}
 \end{document}
