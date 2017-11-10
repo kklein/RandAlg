@@ -28,7 +28,7 @@
 \section*{Exercise 2}
 \section*{Exercise 3}
 \section*{Exercise 4}
-TODOs: Stirling formula, exact size (i.e. rounding error), prove min
+TODOs: Exact size (i.e. rounding error)
 \begin{enumerate}
 \item
 First, we'll bound the probability of a given subset of size \(n/2\) not containing a triangle. In this subset, there are \( {n/2 \choose 3}\) many possible triangles, over which we assume an arbitrary order. We define 
@@ -44,7 +44,7 @@ In order to calculate \(\Delta\), we notice that \(I_i = \{e_{i1}, e_{i2}, e_{i3
 \item If they share 2 edges, the third edge needs to be the same for both triangles as there is at most a single edge connecting two nodes. Hence \(i = j\).
 \item If they share 3 edges, \(i = j\) holds trivially. 
 \end{enumerate}
-We can conclude that the only relevant case is the second. It remains to inspect how frequently this case can occur. In a given subset, there are \( {n/2 \choose 3} \) possible triangles, of which each can share each of its 3 edges. When sharing an edge, the second triangle can be 'completed' by \( (n/2 -3\) remaining nodes. Summing up, we have:
+We can conclude that the only relevant case is the second. It remains to inspect how frequently this case can occur. In a given subset, there are \( {n/2 \choose 3} \) possible triangles, of which each can share each of its 3 edges. When sharing an edge, the second triangle can be 'completed' by \(n/2 -3\) remaining nodes. Summing up, we have:
 
 \begin{align*}
 \Delta = {n/2 \choose 3}3(n/2 -3) p^5
@@ -52,6 +52,19 @@ We can conclude that the only relevant case is the second. It remains to inspect
 Janson's equality tells us:
 \begin{align*}
 \Pr[T = 0] = e^{- min\{\lambda, \lambda^2 / \Delta\} /4} 
+\end{align*}
+Let us determine said minimum.
+\begin{align*}
+\frac{\lambda^2}{\Delta} &= \frac{n^6 p^6}{ {n/2 \choose 3}3(n/2 -3) p^5} = \frac{n^6 p}{ {n/2 \choose 3}3(n/2 -3)} \\
+&> \frac{n^6p}{n^4} = n^2p \\
+&> n^2 n^{-2/3} \text{     (via } p\gg n^{-2/3} \text{)} \\
+&> n = n^3 n^{-2} \\
+&> n^3 p^3 = \lambda  \text{     (via } p\gg n^{-2/3} \text{)}
+\end{align*}
+Thus, as \( \lambda < \frac{\lambda^2}{\Delta}\) for given \(p\), it follows:
+\begin{align*}
+\Pr[T = 0] &= e^{-\lambda/4} = e^{-\frac{n^3p^3}{4}} \\
+&= e^{-\omega(n)}    \text{     (via } p\gg n^{-2/3} \text{)}
 \end{align*}
 
 We will now use this knowledge about the probability of a given subset containing no triangle to estimate the probability of each subset containing a triangle. We observe that there are \( {n \choose n/2}\) ways to partition the nodes into subsets of size \(n/2\). 
@@ -66,8 +79,14 @@ We look into the latter probability.
 &\leq  {n \choose n/2} \Pr[\text{subset } 1 \text{ contains no triangle}] \text{   (all subsets symmetric)} \\
 &\leq \frac{2^n}{\sqrt n}  \Pr[\text{subset } 1 \text{ contains no triangle}] \text{   (Stirling approximation)} \\
 &\leq \frac{2^n}{\sqrt n}  \Pr[T = 0]\\
+&\leq \frac{2^n}{\sqrt n} e^{-\omega(n)} = \frac{e^{ln(2)n - \omega(n)} }{\sqrt n} \\
+&\leq \frac{1}{\sqrt n \cdot e^{\omega(n) - \mathcal{O}(n)}} \xrightarrow{\: n \to \infty \: } 0
 \end{align*}
 
+It follows directly that:
+\begin{align*}
+\Pr[\text{each subset contains a triangle}] \xrightarrow{\: n \to \infty \: }  1 - 0 = 1
+\end{align*}
 \item
 \end{enumerate}
 \end{document}
