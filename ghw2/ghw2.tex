@@ -61,11 +61,11 @@ Our goal now is to use the bound on the probability of the first entry of \( (Aq
 \section*{Exercise 3}
 \section*{Exercise 4}
 \subsection*{Exercise 4.1}
-First, we'll bound the probability of a given subset of size \(n/2\) not containing a triangle. In this subset, there are \( {n/2 \choose 3}\) many possible triangles, over which we assume an arbitrary order. We define 
+First, we'll bound the probability of a given subset of size \(n/2\) not containing a triangle. In such a subset, there are \( {n/2 \choose 3}\) many possible triangles, over which we assume an arbitrary order. We define 
 \begin{align*} 
 T_i &= \mathbb{I} [\text{triangle } i \text{ is present in subset } 1] = p^3 \\
 T &= \sum_{i \in {n/2 \choose 3}} T_i \\
-\lambda &= \E[T] \loe \sum_{i \in {n/2 \choose 3}} \E[T_i]
+\lambda &= \E[T] \loe \sum_{i \in {n/2 \choose 3}} \E[T_i] = {n/2 \choose 3} p^3
 \end{align*}
 In order to calculate \(\Delta\), we notice that \(I_i = \{e_{i1}, e_{i2}, e_{i3} \}\), where \(e_{ik}\) are the edges constructing the triangle \(i\). We proceed by formulating a case distinction on the number of shared edges between two triangles \(i\) and \(j\).
 \begin{enumerate}
@@ -85,8 +85,9 @@ Janson's equality tells us:
 \end{align*}
 Let us determine said minimum.
 \begin{align*}
-\frac{\lambda^2}{\Delta} &= \frac{n^6 p^6}{ {n/2 \choose 3}3(n/2 -3) p^5} = \frac{n^6 p}{ {n/2 \choose 3}3(n/2 -3)} \\
-&> \frac{n^6p}{n^4} = n^2p \\
+\frac{\lambda^2}{\Delta} &= \frac{({n/2 \choose 3} p^3)^2}{ {n/2 \choose 3}3(n/2 -3) p^5} = \frac{{n/2 \choose 3}p}{3(n/2 -3)} \\
+&= \frac{n^3p}{n} \text{     (for large enough \(n\))} \\
+&= n^2p \\
 &> n^2 n^{-2/3} \text{     (via } p\gg n^{-2/3} \text{)} \\
 &> n = n^3 n^{-2} \\
 &> n^3 p^3 = \lambda  \text{     (via } p\gg n^{-2/3} \text{)}
@@ -118,5 +119,47 @@ It follows directly that:
 \Pr[\text{each subset contains a triangle}] \xrightarrow{\: n \to \infty \: }  1 - 0 = 1
 \end{align*}
 \subsection*{Exercise 4.2}
+We claim that \( p = n^{-2/3}\) is a weak threshold and thereby want to prove that
+\[\lim_{n \to \infty} Pr [G_{n,p} \text{is almost triangular}] = 
+ \begin{cases}
+ 	0, & p \ll n^{-2/3} \\
+	1, & p \gg n^{-2/3} \\
+    \end{cases}\]
+We aim to show the first case first and therefore assume \( p \ll n^{-2/3}\). Let's say that \(X\) represents the number of triangles in a random graph \(G_{n,p}\), then we know that \( \E [X] = {n \choose n/3} p^3\). The number of vertex-disjoint triangles in \(G_{n,p}\) has to be smaller or equal the number of triangles in a graph. Hence, with \(X' = \# \)vertex-disjoint triangles in \(G_{n,p}\), we can say \(\E[X'] \leq \E[X]\). We can apply Azuma's inequality to \(X'\) with node-exposure: as the triangles are vertex-disjoing, no more than 1 triangle can be affected by one node. In other words \(\forall i \in \{1, \dots, n\}\ c_i \leq 1 \). We choose some sublinear \(t\), say \( t = n^{3/4}\). We obtain:
+\begin{align*}
+\Pr[X' \geq \E [X'] + n^{3/4}] \leq e^{-\frac{n^{3/2}}{2n1}} \leq e^{\frac{-\sqrt n}{2}}  \xrightarrow{\: n \to \infty \: }  0
+\end{align*}
+As \(\E[X']\) is a little tricky to compute, we will only compare it to \(\E[X]\) and make use of  \(p \ll n^{-2/3}\).
+\begin{align*}
+\E[X'] \leq \E[X] = {n \choose 3}p^3 \leq n^3p^3  \ll n^3n^{-2} = o(n)
+\end{align*}
+As \(n^{3/4} = o(n)\), we can say that for large enough \(n\):
+\begin{align*}
+\Pr[X' \geq \frac{(1-\epsilon)n}{3}] = \Pr[X' \geq \Theta(n)] \leq \Pr[X' \geq o(n) + o(n)] \leq  \Pr[X' \geq \E [X'] + n^{3/4}]  \xrightarrow{\: n \to \infty \: }  0
+\end{align*}
+which is what we intended to show for the first case. \\
+Let us now look into the second case and assume \( p \gg n^{-2/3}\). For this purpose we define the random variable \(T\) to be the number of triangles in a subset of \(\epsilon n\) nodes of \(G_{n,p}\). Such a subset is drawn u.a.r. from all possible subsets of that size. The expected value of said random variable is \(\lambda = \sum_{\epsilon n \choose  3} T_i = {\epsilon n \choose  3} p^3 \), where \(T_i\) indicates the 'presence' of a particular triangle in the fixed subset. In order to apply Janson's inequality, we observe that \(\Delta = {\epsilon n \choose 3} 3 (\epsilon n -3) p^5 \) - analogously to Exercise 4.1. As \(\epsilon\) is a constant independent of \(n\), we can argue that, also analogously to Exercise 4.1, \(\lambda < \frac{\lambda^2}{\Delta} \) for large enough \(n\), because we have assumed that \( p \gg n^{-2/3}\). Therefore Janson's inequality gives us:
+\[ \Pr [T = 0] \leq e^{-\frac{{\epsilon n \choose 3}p^3}{4}} \leq e ^{-\omega(n)}\]
+Hence we know that in a subset of \(\epsilon n \) nodes, the presence of a triangle is very likely. At the same time, we observe that we can use \( {\epsilon n \choose 3} \leq 2^{\epsilon n} \leq 2^n \) in order to arrive at:
+\begin{align*}
+\Pr[\text{each subset of size } \epsilon n \text{ contains a triangle} ] \geq 1 - 2^n e^{- \omega(n)} \xrightarrow{\: n \to \infty \: }  1
+\end{align*} 
+just as we have shown in Exercise 4.1.
 
+\begin{claim} If each subset of size \(\epsilon n\) contains a triangle, then there are at least \(\frac{(1 - \epsilon)n}{3}\) many vertex-disjoint triangles. 
+\end{claim}
+\begin{proof}
+Assume that each susbet of size \(\epsilon n\) contains a triangle and that there are \(t < \frac{(1 - \epsilon)n}{3}\) vertex-disjoint triangles. We define \(V_t\) to be the set of nodes that belong to the vertex-disjoint triangles in the maximal constellation. It follows immediately:
+\begin{align*}
+|\overline{V_t}|= n - |{V_t}| > n - (1 - \epsilon) n = \epsilon n
+\end{align*}
+Therefore \(\overline{V_t}\) is sufficiently large to contain a triangle, according to our assumption. This triangle has no nodes in with \(V_t\) and therefore is another vertex-disjoint triangle, not accounted for in the assumed maximum. This concludes the contradiction and proves the claim.
+\end{proof}
+
+\begin{align*}
+&\Pr[G_n,p \text{ has } \frac{(1 - \epsilon)n}{3} \text {vertex-disjoint triangles}]  \\
+& \geq \Pr[\text{each subset of size } \epsilon n \text{ contains a triangle}] \\
+& \geq 1 - 2^n e^{- \omega(n)} \xrightarrow{\: n \to \infty \: }  1
+\end{align*}
+Thus, we have shown both cases that were to be shown.
 \end{document}
