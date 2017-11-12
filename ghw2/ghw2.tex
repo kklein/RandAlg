@@ -8,6 +8,7 @@
 
 \newcommand\loe{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\tiny\sffamily LOE}}}{=}}}
 \newcommand\ub{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\tiny\sffamily UB}}}{\leq}}}
+\newcommand\gequb{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\tiny\sffamily UB}}}{\geq}}}
 
 %This is how you can create a "claim"-environment (or a lemma/Theorem/definition etc environment)
 \newtheorem{claim}{Claim}
@@ -26,11 +27,40 @@
 
 \section*{Exercise 1}
 \section*{Exercise 2}
+First, we want to look into a single entry of \((Aq)\), say \((Aq)_1 = a_1\). We know that \(q \in_{u.a.r.} \{-1,1\}\) and define \(q' = \frac{q+1}{2}\). Intuitively, \(q'\) 'counts' how many indeces of \(q\) equal 1. We observe that \(q = 2q' - 1\).  Moreover we say \(m\) is the number of indeces in \(a_1\) that equal 1, i.e. \(m = \sum_{i=1}^n \mathbb{I}[a_{1i} = 1] \).
+\begin{align*}
+\Pr[|a_1q| \geq \sqrt {(6+\epsilon)nln(n)} ] &= \Pr[|2a_1q' - 2a_11| \geq \sqrt {(6+\epsilon)nln(n)} ] \\
+ &= \Pr[|2a_1q' - m| \geq \sqrt {(6+\epsilon)nln(n)} ] \\
+  &= \Pr[|a_1q' - m/2| \geq \frac{\sqrt {(6+\epsilon)nln(n)}}{2} ]
+\end{align*}
+Note that \(q_i'\) is a Bernoulli random variable with \(p = 1/2\), independent from all other \(q_j', i \neq j\), this will come in handy in order to use Chernoff bounds. Moreover we notice that \(\E[a_1q'] = 
+a_1 \E[q'] = a_1 \cdot 1/2 = m/2 \).  Applying Corollary 5.4 (iii), we obtain:
+\begin{align*}
+ \Pr[|a_1q' - m/2| \geq \frac{\sqrt {(6+\epsilon)nln(n)}}{2} ] &\leq 2 e^{-(\frac{\sqrt {(6+\epsilon)nln(n)}}{2})^2 \frac{1}{3 \mu }} \\
+ & \leq 2 n^{-\frac{(6+\epsilon)n}{12 m /2}} =  2 n^{-\frac{6+\epsilon}{6} \frac{n}{m}} \\
+ & \leq 2 n^{-\frac{6+\epsilon}{6}} & \text{(via } m < n \text{)}
+\end{align*}
+It remains to show that this application was legitimate by proving that the formula's \(\delta = \frac{\sqrt {(6+\epsilon)nln(n)}}{m/2}  \in (0,1] \) for large enough \(n\). 
+\begin{claim} \(\delta\) is smaller than 1 for large enough \(n\). \end{claim}
+\begin{proof}
+\begin{align*}
+\lim_{n \to \infty} \delta &= \lim_{n \to \infty} \frac{\sqrt {nln(n)}}{m}  \leq \lim_{n \to \infty} \frac{\sqrt {nln(n)}}{n}  \\
+& \leq \lim_{n \to \infty} \sqrt \frac{ {ln(n)}}{n}  \to 0
+\end{align*}
+\end{proof}
+Hence \(\delta\) is smaller than 1 for large enough \(n\) and trivially positive, which satisfies the Chernoff bound's condition.
+
+Our goal now is to use the bound on the probability of the first entry of \( (Aq) \) for all entries via a union bound.
+\begin{align*}
+\Pr[ \lVert Aq \lVert_{\infty} < \sqrt {(6+\epsilon)nln(n)}] &= \Pr[ \forall i  |(Aq)_i|  < \sqrt {(6+\epsilon)nln(n)}] \\
+&= 1 - \Pr[ \exists i  |(Aq)_i|  \geq \sqrt {(6+\epsilon)nln(n)}] \\
+&\gequb 1 - \sum_{i=1}^n \Pr[|(Aq)_i|  \geq \sqrt {(6+\epsilon)nln(n)}] \\
+&\geq 1 - n \Pr[|(Aq)_1|  \geq \sqrt {(6+\epsilon)nln(n)}] \text{     (independence of rows)}\\
+&\geq 1 - n 2 n^{-\frac{6+\epsilon}{6}}  \xrightarrow{\: n \to \infty \: } 1
+\end{align*}
 \section*{Exercise 3}
 \section*{Exercise 4}
-TODOs: Exact size (i.e. rounding error)
-\begin{enumerate}
-\item
+\subsection*{Exercise 4.1}
 First, we'll bound the probability of a given subset of size \(n/2\) not containing a triangle. In this subset, there are \( {n/2 \choose 3}\) many possible triangles, over which we assume an arbitrary order. We define 
 \begin{align*} 
 T_i &= \mathbb{I} [\text{triangle } i \text{ is present in subset } 1] = p^3 \\
@@ -87,6 +117,6 @@ It follows directly that:
 \begin{align*}
 \Pr[\text{each subset contains a triangle}] \xrightarrow{\: n \to \infty \: }  1 - 0 = 1
 \end{align*}
-\item
-\end{enumerate}
+\subsection*{Exercise 4.2}
+
 \end{document}
