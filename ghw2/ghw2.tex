@@ -18,14 +18,25 @@
 
 %Titlepage:
 \title{Randomized Algorithms and Probabilistic Methods: Graded Homework 1}
-\author{ Kevin Klein, collaborators: Ramon Braunwarth, Fabian Gerhardt}
-\date{October 23rd 2017}
+\author{ Kevin Klein\\Collaborators: Ramon Braunwarth, Fabian Gerhardt, Emanuel Malvetti}
+\date{November 13, 2017}
 
 
 \begin{document}
 \maketitle
 
 \section*{Exercise 1}
+We define the random variable \(X\) to be the size of a maximal neighbor-matching and \(X_i\) to be the number of balls in bin \(i\). We know that if each bin has at least \(k\) balls, we can for sure find a neighbor-matching of size \(k \cdot \frac{n}{2}\). In other words, \(k\) is the mimimum of the loads of the bins, i.e. \(\min_i X_i\). We observe that in section 6.1. of the lecture's script, it has been shown that those \(X_i\) are negatively associated with expected value \(\frac{m}{n}\). This permits us to apply the Chernoff bound 5.4 (ii).
+\begin{align*}
+\Pr[X < (1-\epsilon)\frac{m}{2}] &\leq \Pr[\min_i X_i \cdot \frac{n}{2} < (1 - \epsilon) \frac{m}{2}] \\
+& \leq \Pr[\bigcup_i X_i \cdot \frac{n}{2} < (1 - \epsilon) \frac{m}{2}] \\
+& \ub \sum_{i=1}^n  \Pr[X_i \cdot \frac{n}{2} < (1 - \epsilon) \frac{m}{2}] \\
+& \leq n  \Pr[X_1 \cdot \frac{n}{2} < (1 - \epsilon) \frac{m}{2}] \\
+& \leq n  \Pr[X_1 \cdot < (1 - \epsilon) \frac{m}{n}] \\
+& \leq n  \Pr[X_1 \cdot \leq (1 - \epsilon) \frac{m}{n}] \\
+& \leq n e^{-\frac{m}{n} \frac{\epsilon^2}{2}} \text{     (via Chernoff bound)} \\
+\end{align*}
+We observe that the latter value tends to zero for large enough n and \(m \gg nlog(n)\). Hence, for \(m \gg nlog(n)\), \( \Pr[X \geq (1-\epsilon)\frac{m}{2}] \) hold whp.
 \section*{Exercise 2}
 First, we want to look into a single entry of \((Aq)\), say \((Aq)_1 = a_1\). We know that \(q \in_{u.a.r.} \{-1,1\}\) and define \(q' = \frac{q+1}{2}\). Intuitively, \(q'\) 'counts' how many indeces of \(q\) equal 1. We observe that \(q = 2q' - 1\).  Moreover we say \(m\) is the number of indeces in \(a_1\) that equal 1, i.e. \(m = \sum_{i=1}^n \mathbb{I}[a_{1i} = 1] \).
 \begin{align*}
@@ -59,6 +70,14 @@ Our goal now is to use the bound on the probability of the first entry of \( (Aq
 &\geq 1 - n 2 n^{-\frac{6+\epsilon}{6}}  \xrightarrow{\: n \to \infty \: } 1
 \end{align*}
 \section*{Exercise 3}
+
+We already know about the relation between \(\gamma(G)\) and \( \gamma(H)\), let us now prove a useful inequality between the expected values of \(\gamma(G)\) and \( \gamma(H)\). 
+\begin{claim}
+\[ \E[\gamma(H)] \geq \frac{\E[\gamma(G)]}{2} \]
+\end{claim}
+\begin{proof}
+\[ \]
+\end{proof}
 \section*{Exercise 4}
 \subsection*{Exercise 4.1}
 First, we'll bound the probability of a given subset of size \(n/2\) not containing a triangle. In such a subset, there are \( {n/2 \choose 3}\) many possible triangles, over which we assume an arbitrary order. We define 
