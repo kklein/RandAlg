@@ -19,7 +19,7 @@
 %Titlepage:
 \title{Randomized Algorithms and Probabilistic Methods: Graded Homework 1}
 \author{ Kevin Klein\\Collaborators: Ramon Braunwarth, Fabian Gerhardt, Emanuel Malvetti}
-\date{November 13, 2017}
+\date{November 14, 2017}
 
 
 \begin{document}
@@ -36,7 +36,7 @@ We define the random variable \(X\) to be the size of a maximal neighbor-matchin
 & \leq n  \Pr[X_1 \cdot \leq (1 - \epsilon) \frac{m}{n}] \\
 & \leq n e^{-\frac{m}{n} \frac{\epsilon^2}{2}} \text{     (via Chernoff bound)} \\
 \end{align*}
-We observe that the latter value tends to zero for large enough n and \(m \gg nlog(n)\). Hence, for \(m \gg nlog(n)\), \( \Pr[X \geq (1-\epsilon)\frac{m}{2}] \) hold whp.
+We observe that the latter value tends to zero for large enough n and \(m \gg nlog(n)\). Hence, for \(m \gg nlog(n)\), \( \Pr[X \geq (1-\epsilon)\frac{m}{2}] \) hols whp.
 \section*{Exercise 2}
 First, we want to look into a single entry of \((Aq)\), say \((Aq)_1 = a_1\). We know that \(q \in_{u.a.r.} \{-1,1\}\) and define \(q' = \frac{q+1}{2}\). Intuitively, \(q'\) 'counts' how many indeces of \(q\) equal 1. We observe that \(q = 2q' - 1\).  Moreover we say \(m\) is the number of indeces in \(a_1\) that equal 1, i.e. \(m = \sum_{i=1}^n \mathbb{I}[a_{1i} = 1] \).
 \begin{align*}
@@ -70,14 +70,25 @@ Our goal now is to use the bound on the probability of the first entry of \( (Aq
 &\geq 1 - n 2 n^{-\frac{6+\epsilon}{6}}  \xrightarrow{\: n \to \infty \: } 1
 \end{align*}
 \section*{Exercise 3}
-
-We already know about the relation between \(\gamma(G)\) and \( \gamma(H)\), let us now prove a useful inequality between the expected values of \(\gamma(G)\) and \( \gamma(H)\). 
-\begin{claim}
-\[ \E[\gamma(H)] \geq \frac{\E[\gamma(G)]}{2} \]
-\end{claim}
-\begin{proof}
-\[ \]
-\end{proof}
+We already know about the relation between \(\gamma(G)\) and \( \gamma(H)\). In addition we obserbe a useful inequality between the expected values of \(\gamma(G)\) and \( \gamma(H)\). <<<
+\begin{align*}
+\E[\gamma(H)] & = \frac{1}{2} (\E[\gamma(H)] + \E[\gamma(H')]) \\
+&\loe \E[\gamma(H) + \gamma(H')] \\
+&\geq \frac{\E[\gamma(G)]}{2} \\
+&\geq \frac{\gamma(G)}{2}
+\end{align*}
+Now we aim to structure the problem as to easily apply Azuma's inequality with vertex-exposure. \\
+Let \(W\) be the set of nodes incident to the edges of \(E'\), i.e. \(|W| \leq 2\gamma(G)\). For each node in \(w_i W\), we define \(E_i = \{\{(w_i, v\}, \{(w_i, v\} \in E, v \notin W\}\). For each edge \(e'_i \in E'\), we define \(E_{|W| + i} = \{e'_i\}\). The \(E_1, \dots, E_{|W|}, E_{|W| + 1}, \cdots, E_{|W| + \gamma(G)}\) are a partition of \(E\). We associate a probability space \(\Omega_i\) with \(E_i\).
+We now need to calculate the effect of each of these probability spaces. In order to do so, we look into how we can create an edge-dominating set for H, if given edges are removed. If \(E_i\) contains an edge from \(E'\), taking or not taking it changes the size of the edge-dominating set of 1, as each edge from the dominating edge can be replaced by one egde per vertex. If \(E_i\) contains egdes to \(W\), a single edge suffices to cover all edges. 
+Hence we can bound \(c_i\) easily by 2.
+Summing up, we get
+\begin{align*}
+\Pr[\gamma(H) \leq 40000)] &\leq \Pr[\gamma(H) \leq \E[\gamma(H) - 10000] \\
+&\leq e^{-\frac{100000000}{2 \sum_{i=1}^{|W| + \gamma(G)} c_i^2}} \\
+&\leq e^{-\frac{100000000}{2 \cdot 300000 \cdot 4}} \\
+& \leq e^{-42} \\
+& < \frac{1}{1000}
+\end{align*}
 \section*{Exercise 4}
 \subsection*{Exercise 4.1}
 First, we'll bound the probability of a given subset of size \(n/2\) not containing a triangle. In such a subset, there are \( {n/2 \choose 3}\) many possible triangles, over which we assume an arbitrary order. We define 
