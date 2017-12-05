@@ -1,0 +1,83 @@
+
+\documentclass[a4paper,german]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bbm}
+
+
+%This is how you can create a "claim"-environment (or a lemma/Theorem/definition etc environment)
+\newtheorem{claim}{Claim}
+
+%This is how you can create a command of your own, e.g. to simplify the usage signs you often use.
+\newcommand{\E}{\mathbb{E}}
+
+%Titlepage:
+\title{Randomized Algorithms and Probabilistic Methods: Graded Homework 3}
+\author{ Kevin Klein, collaborators: Ramon Braunwarth}
+\date{December 8 2017}
+
+
+\begin{document}
+\maketitle
+
+\section*{Exercise 1}
+\subsection*{a)}
+For \(k \in \{1, \dots, n\}\), we know that there are \( n \choose k\) subgraphs of \(G\) with \(k\) vertices. For one of those subgraphs to be fully connected, i.e. \(K_k\), all of the \(k \choose 2\) possible edges have to be part of the edge set of \(G\).  Defining \(X_k\) to be the number of cliques of size \(k\) in \(G\), its expectation equals  \( {n \choose k} (1/2)^{k \choose 2}\), as every edge is selected with probability \(1/2\). 
+
+We observe that \(\Pr [X \geq k] = \Pr[X_k > 0]\) because if a clique of size \(k + l, l \geq 1\) exists in \(G\), \(G\) also has cliques of size \(k\). As \(X_k\) can only take on positive  integer values, \(\E[X_k]\) has to be greater or equal \(Pr[X \geq k]\). For some \(c \in \mathbb{N}_{>0}\), independent of \(n\):
+
+\begin{align*}
+\E[X] &= \sum_{k=1}^\infty \Pr[X \geq k] =  \sum_{k=1}^n \Pr[X \geq k] \\
+&= \sum_{k=1}^{c \cdot \lceil log(n) \rceil} \Pr[X \geq k]  + \sum_{i = c \cdot \lceil log(n) \rceil + 1} ^ n \Pr[X \geq k]   \\
+&\leq \sum_{k=1}^{c \cdot \lceil log(n) \rceil} 1  + \sum_{i = c \cdot \lceil log(n) \rceil + 1} ^ n \Pr[X \geq k]   \\
+&\leq  c \cdot \lceil log(n) \rceil + \sum_{k=c \cdot \lceil log(n) \rceil + 1}^n \E[X_k] \\
+&= c \cdot \lceil log(n) \rceil+ \sum_{k=c \cdot \lceil log(n) \rceil + 1}^n {n \choose k} (1/2)^{k \choose 2}
+\end{align*}
+
+It is left to show that \( \sum_{k=c \cdot \lceil log(n) \rceil + 1}^n {n \choose k} (1/2)^{k \choose 2}  \) is in \(\mathcal{O}(log(n))\). \( {n \choose k} \) can be easily bounded by \(n^k\) from above. Also, we observe the following:
+\begin{align*}
+k \geq c \cdot \lceil log(n) \rceil + 1 &\Rightarrow {k \choose 2} = \frac{k(k-1)}{2} \geq \frac{k\cdot c \cdot log(n)}{2} \\
+& \Rightarrow (1/2)^{k \choose 2} \leq (1/2) ^ \frac{k\cdot c \cdot log(n)}{2} = n ^ {-{k \cdot c /2}}
+\end{align*}
+Combining those two bounds we obtain:
+\begin{align*}
+\sum_{k=c \cdot \lceil log(n) \rceil + 1}^n {n \choose k} (1/2)^{k \choose 2} &\leq \sum_{k=c \cdot \lceil log(n) \rceil + 1}^n n^k n ^ {-{k \cdot c /2}} = \sum_{k=c \cdot \lceil log(n) \rceil + 1}^n  n^{k(1 - c/2)} \\
+&\leq \sum_{k=4 \cdot \lceil log(n) \rceil + 1}^n n ^ {-k} \text{ for } c = 4\\\
+&\leq \sum_{i=1}^n n^{-k} = H_n \leq log(n + 1) \leq 2 \cdot log(n) \text{ for } n \geq 3
+\end{align*}
+We conclude that \(\E[X] \leq  4 \cdot log(n) + 2 \cdot log(n)\). Equivalently, for \(c' = 6\) we have \(\E[X] \leq c' log(n)\), which is what we intended to show. For \(n \in \{1,2\} \) we can fix the constant to be a very large number. 
+
+\subsection*{b)}
+Assuming \(\E[X] = \Theta(log(n))\) we can express the desired probability's negation in a convenient fashion.
+\begin{align*}
+&\Pr[X \notin  [(1 - \alpha(n)) \E[X], (1 + \alpha(n)) \E[X]]] \\
+&= \Pr[X < (1 - \alpha(n)) \E[X]\ \wedge  X > (1 + \alpha(n)) \E[X]] \\
+&= \Pr[X - \E[X] < - \alpha(n) \E[X]\ \wedge X - \E[X] > \alpha(n) \E[X]] \\
+&= \Pr[|X - \E[X]| > \alpha(n)\E[X]] \\
+& \leq \Pr[|X - \E[X]| \geq \alpha(n)\E[X]]
+\end{align*}
+We recognize a form from Lemma 8.2. In order to make use of it, we need to ensure its conditions are satisfied. Let \( \Omega = \Omega_1 \times \dots \times \Omega_N\) with \(N = n\) and each \(\Omega_i\) describing whether all of the \(n-1\) edges of vertex \(i\) are included or not. It follows directly that the effect of each dimension \(c_i\) is at most 1. Let \(\omega \in \Omega\) be a selection of such vertices and \(X(\omega)\) its maximum clique size. Setting \(r = X(\omega)\) trivially fulfills \(r \leq X(\omega)\). Let us define \(J\) to be the subset of \(\{1, \dots, n\}\) that indicates which vertices compose a \(X(\omega)\)-clique - arbitrarily in case of ties. Then, for each \(\omega' \in \Omega\) with \(\forall i \in J, w'_i = w_i\), the size of the maximum clique in \(\omega'\) can only increase, i.e. \(X(\omega') \geq X(\omega) = r\). Moreover:
+\begin{align*}
+ \sum_{i \in J} c_i^2 \leq \sum_{i \in J} 1 = |J| = X(\omega) = r
+ \end{align*}
+Thereby the necessary conditions hold true and Lemma 8.2.'s application yields:
+\begin{align*}
+&\Pr[X \notin  [(1 - \alpha(n)) \E[X], (1 + \alpha(n)) \E[X]]] \\
+&\leq 4 e^{- \Omega(\frac{(\alpha(n)\E[X])^2}{\E[X] + \alpha(n) \E[X]})} =  4 e^{- \Omega(\frac{\alpha(n)^2\E[X]}{1 + \alpha(n)})}\\
+\end{align*}
+We define \(\alpha(n) = log(n) ^ {-1/4} \in o(1)\). 
+\begin{align*}
+\lim_{n \to \infty} \frac{\alpha(n)^2 log(n)}{1 + \alpha(n)} = \lim_{n \to \infty} \frac{log(n)}{\sqrt{log(n)} \cdot 1} = \lim_{n \to \infty} \sqrt{log(n)} \to \infty\\
+\end{align*}
+It follows directly that \(\Pr[X \notin  [(1 - \alpha(n)) \E[X], (1 + \alpha(n)) \E[X]]] \) tends to 0 for large enough \(n\).
+\begin{align*}
+&\Pr[X \in  [(1 - \alpha(n)) \E[X], (1 + \alpha(n)) \E[X]]]  \\
+&= 1 - \Pr[X \notin  [(1 - \alpha(n)) \E[X], (1 + \alpha(n)) \E[X]]] \\
+& \to 1
+\end{align*}
+\section*{Exercise 2}
+\section*{Exercise 3}
+\section*{Exercise 4}
+\end{document}
