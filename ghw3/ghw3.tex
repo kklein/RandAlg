@@ -77,7 +77,33 @@ It follows directly that \(\Pr[X \notin  [(1 - \alpha(n)) \E[X], (1 + \alpha(n))
 &= 1 - \Pr[X \notin  [(1 - \alpha(n)) \E[X], (1 + \alpha(n)) \E[X]]] \\
 & \to 1
 \end{align*}
+
 \section*{Exercise 2}
+We define \((Y_t)_{t \in \mathbb{N}}\) to be the amount of 'missing mutants', i.e. \(n - |X_t|\). Hence we are looking to bind \(\E[T]\) for \(Y_t\) from above. We define \(u_t\) and \(v_t\) to be the \(u\) and \(v\) of the \(t\)-th round of the evolutionary process. As \(G = K_n\) and \(V_o = n/2\), we know that \(\Pr[u_t \in V_o] = \Pr[u_t \notin V_0] = 1/2\). \\
+The process' drawing process weighs vertices from \(V_t\) with \(r\). Given that \(Y_t = y\), there are \( |X_t| = n - y\) such vertices. Hence:
+\begin{align*}
+\Pr[v_t \in X_t] = \frac{r(n-y)}{r(n-y) + 1 \cdot y} \text{ and } \Pr[v \notin X_t] = \frac{1 \cdot y}{r(n-y) + 1 \cdot y} 
+\end{align*}
+As \(u_t\) is drawn after \(v_t\), there are only \(n-1\) vertices to choose from. In particular, we observe that \(y\) is at most \(n/2\) because \(X_t\) will always include \(V_0\). Hence the size of \(X_t \setminus V_0\) is given by \(|X_t| - |V_0| = n - y - n/2 = n/2 - y\).
+\begin{align*}
+\Pr[u_t \in X_t \setminus V_0] = \frac{n/2 - y}{n-1} \text{ and } \Pr[u_t \notin X_t] = \frac{y}{n-1}
+\end{align*}
+Moreover, in order for \(Y_{t+1}\) to decrease over \(Y_t\), \(v_t\) has to be part of \(X_t\) and \(u_t\) be a node not yet contained in \(X_t\). Hence:
+\begin{align*}
+\Pr[Y_{t+1} = Y_t - 1] = \Pr[u_t \notin V_0] \Pr[v_t \in X_t] \Pr [u_t \notin X_t] = \frac{1}{2} \frac{r(n-y)}{r(n-y) + y} \frac{y}{n-1}
+\end{align*}
+On the other hand, for \(Y_{t+1}\) to increase over \(Y_t\),  \(v_t\) has to be excluded from \(X_t\) and \(u_t\) be already contained in \(X_t\). Hence:
+\begin{align*}
+\Pr[Y_{t+1} = Y_t + 1] = \Pr[u_t \notin V_0] \Pr[v_t \notin X_t] \Pr [u_t \in X_t \ V_0] = \frac{1}{2} \frac{y}{r(n-y) + y} \frac{n/2 - y}{n-1}
+\end{align*}
+We will now inspect the drift in order to find a fitting function \(g\) to apply Theorem 9.11. We observe that \(Y_t\) can only remain, increase by one or decrease by one.
+\begin{align*}
+\E[Y_{t+1} | Y_t = y] &= y \Pr[Y_{t+1} = Y_t] + (y-1)\Pr[Y_{t+1} = Y_t - 1] + (y+1)\Pr[Y_{t+1} = Y_t + 1] \\
+&=y - \Pr[Y_{t+1} = Y_t - 1] + \Pr[Y_{t+1} = Y_t + 1] \\
+&=y - (\Pr[Y_{t+1} = Y_t - 1] - \Pr[Y_{t+1} = Y_t + 1]) \\
+&= y - \frac{1}{2}\frac{y}{(r(n-y) +y) (n-1)} (r(n-y) - (n/2 - y))
+\end{align*}
+
 \section*{Exercise 3}
 \section*{Exercise 4}
 \end{document}
