@@ -121,7 +121,42 @@ We observe that \( \int_1^{n/2} \frac{c \cdot y}{n} dy =  \left[ c\cdot y log(n)
 	\E[T] \leq \frac{c}{n} + c\cdot n log(n)
 \end{align*} 
 In conclusion, we have shown that for \(Y_t\) \(E[T] \in \mathcal{O}(nlog(n))\). According to the definition of \(Y_t\), it \(X_t = V\) if \(Y_t = 0\). Hence the bound on the process end also holds for \(X_t\).
+
 \section*{Exercise 3}
+	Our goal is to apply Theorem 9.11, followed by Theorem 9.10. In particular, we define Theorem 9.11's \(C := y\), \(X_0 = n\) and 
+	\begin{align*}
+		g(i) = \begin{cases}
+			\frac{\sqrt i (x+y)}{xy}, i > y \\
+			0, i \leq y
+			\end{cases}
+	\end{align*}
+	Our main concern is to show that Theorem 9.11's inequality holds. In other words, we want to find a \(c > 0\), s.t. for all \(i \in \mathbb{N}, i>y\):
+	\begin{align*}
+		&\sum_{m>c} \Pr[X_{t+1} = m | X_t = i] g(m) \leq g(i) - c \\
+		&\Leftrightarrow Pr[X_{t+1} = i-y|X_t = i] g(i-y) + Pr[X_{t+1} = min(i+x,n) | X_t = i] g(min(i+x,n)) \leq g(i) -c \\
+		&\Leftrightarrow \frac{x}{x+y} g(i-y) + \frac{y}{x+y}g(i+x) \leq g(i) -c \\
+		&\Leftrightarrow  \frac{x}{x+y} g(i-y) + \frac{y}{x+y}\frac{\sqrt{i+x}(x + y)}{xy} - \frac{\sqrt i (x+y)}{xy}\leq -c \\
+		&\Leftarrow \frac{x}{x+y}\frac{\sqrt{i-y}(x+y)}{xy} + \frac{\sqrt{i+x}}{x} - \frac{\sqrt i}{x} - \frac{\sqrt i}{y }\leq -c
+	\end{align*}
+	We can replace \(g(i-y)\) by assuming that \(i-y > y\) because it only makes the inequality harder to satisfy. We observe that the initial condition holds true if:
+	\begin{align*}
+		\frac{\sqrt{i+x} - \sqrt i }{x} - \frac{\sqrt i - \sqrt{i-y}}{y} \leq -c
+	\end{align*}
+	With \(f(i) = \sqrt i\), we can apply the Mean Value Theorem for both of those terms.  In other words, we know that there exist \(\xi_1 \in ]i, i+x[\) and \(\xi_2 \in ]i-y, i[\) s.t. \(f'(\xi_1) = \frac{\sqrt{i+x} - \sqrt i }{x} \) and \(f'(\xi_2) = \frac{\sqrt i - \sqrt{i-y}}{y}\). Note that our \(g\) is concave and \(\xi_1, \xi_2\) are distinct. Multiplying and dividing our equation by the same term, we obtain that the intial condition holds true if:
+	\begin{align*}
+		(\xi_1 - \xi_2) \frac{f'(\xi_1) - f'(\xi_2)}{\xi_1 - \xi_2} \leq -c
+	\end{align*} 
+	As our \(f'(i) = \frac{1}{2\sqrt i}\) is continuous for \(i > k\), we can apply the Mean Value Theorem once again. Hence there is a \(\xi_3 \in ]\xi_2, \xi_1[\) such that \(f''(\xi_3) = \frac{f'(\xi_1) - f'(\xi_2)}{\xi_1 - \xi_2} \), with \(f''(i) = - \frac{1}{4\sqrt{i^3}}\). A look into the intervals from which \(\xi_1\) and \(\xi_2\) originate, we know that \(\xi_1\) is less than \(i+x\) and \(\xi_2\) more than \(i-y\). Therefore \(\xi_1 - \xi_2\) can be bounded from above by \((i+x) - (i - y) = x + y\). Additionally, \(\xi_3 \leq \xi_1 \leq i +x \leq n +x\).  Combining this knowledge we can state that the initial condition is satisfied if:
+	\begin{align*}
+		&-(x + y)\frac{1}{4\sqrt{(n+x)^3}} \leq -c \\
+		&\Leftrightarrow c \leq (x + y)\frac{1}{4\sqrt{(n+x)^3}}
+	\end{align*}
+	Therefore we can apply Theorem 9.11 and state that:
+	\begin{align*}
+		\E[T_y] \leq g(n)/y \leq \frac{\sqrt n (x+y)}{xy} \frac{4 \sqrt{(n+x)^3}}{x+y} \leq \sqrt n \sqrt{4(n+x)^3} \leq k \cdot n^2 
+	\end{align*}
+	for some large enough \(k\), independent of \(n\). In order to apply Theorem 9.10, we define \(p_0\) to be the probability to 'go left', i.e. \(\frac{x}{x+y}\) and \(C = y\). We observe that \(\E[T_y | X_0 =n]\) is awlays finite as there is no way of 'getting stuck' on the right-hand side of \(y\) and the Markov chain itself is finite. Therfore 
+	\(\sum_{m > y} \Pr[X_{t+1} = m| X_t = i]\E[T_y|X_0 = m]\) can be bounded by some large \(B\) for all \(i \leq y\). This insight allows us to apply Theorem 9.10, i.e. \(\E[T] = \E[T_y] + \mathcal{O}(1) \leq k \cdot n^2 + \mathcal{O}(1)\).
 \section*{Exercise 4}
 \subsection*{(a)}
 \subsection*{(b)}
