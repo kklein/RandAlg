@@ -126,19 +126,38 @@ In conclusion, we have shown that for \(Y_t\) \(E[T] \in \mathcal{O}(nlog(n))\).
 \subsection*{(a)}
 \subsection*{(b)}
 \subsection*{(c)}
-\begin{enumerate}[i]
+\begin{enumerate}[(i)]
 	\item
-	The definition of the tree makes it easy to see that each bin has to have a leaf to be associated with it, namely be connected to a ball with label 6. Moreover this ball will not be connected to another bin in the graph, by definition. (TODO(kkleindev): check). The presence of the ball of height \(h\), connected to bin \(u\), implies the presence of a leaf associated with \(u\) as well as the leafs present in the subtrees rooted in other balls connected to \(u\). We know that there are balls labeled from 7 to \(h -1\) connected to \(u\). Hence: \(t(h) = 1 + \sum_{i=7}^{h-1} t(i) \).
+	By definition of the construction of the tree, we know that we have exactly one leaf, a ball with label 6, per bin and one bin per leaf. In other words \(t(h) = \nu(h)\).  \\
+	The presence of the ball of height \(h\), connected to bin \(u\), implies the presence of a leaf associated with \(u\). Moreover, the subtrees starting in balls labeled 7 to \(h-1\) connected to \(u\) will contain leaves. Hence: \(t(h) = 1 + \sum_{i=7}^{h-1} t(i) \).
 	\begin{claim} 
 		\(\forall h \in \mathbb{N}, h \geq 7: t(h) = 2^{h-7}\)
 	\end{claim}
 	\begin{proof} 
-		We observe that for \(h = 7\), there is one leaf, i.e. \(t(7) = 1 = 2 ^{7-7}.\) We will assume our hypothesis for some h and will show it holds for \(h+1\) as well.
+		We observe that for \(h = 7\), there is one leaf, i.e. \(t(7) = 1 = 2 ^{7-7}.\) We will assume our hypothesis for some \(h \geq 7\) and will show it holds for \(h+1\) as well.
 		\begin{align*}
-		t(h+1) = 1 + \sum \\
+			t(h+1) &= 1 + \sum_{i=7}^{h} t(i) \\
+			&= 1 + \sum_{i=7}^{h}2^{i-7} \text{ (induction hypothesis)} \\
+			&= 1 + (2^{h+1-7} - 1) = 2^{h+1-7}
 		\end{align*}
 	\end{proof}
+	\item
+	Knowing that the witness graph is a tree, we know that we can add up, for a bin, the leaf, the ball of greatest height \(h\) and all balls in subtrees rooted in \(7\) to \(h-1\) connected to the bin, without double-counting or missing a ball. Hence \(\mu(h) = 2 + \sum_{i=7}^{h-1} \mu(i)\). 
+	\begin{claim}
+		\(\forall h \in \mathbb{N}, h \geq 7: \mu(h) = 2^{h-6}\)
+	\end{claim}
+	\begin{proof} 
+		We observe that for \(h = 7\), there is one leaf as well as the ball labeled 7, i.e. \(\mu(7) = 2 = 2 ^{7-6}.\) We will assume our hypothesis for some \(h \geq 7\) and will show it holds for \(h+1\) as well.
+		\begin{align*}
+			\mu(h+1) &= 2 + \sum_{i=7}^{h} \mu(i) \\
+			&= 2 + \sum_{i=7}^{h}2^{i-6} \text{ (induction hypothesis)} \\
+			&= 2 + 2(2^{h+1-7} - 1) = 2^{h+1-6}
+		\end{align*}
+	\end{proof}
+
+
 \item 
+See (i).
 \end{enumerate}
 \subsection*{(d)}
 \end{document}
