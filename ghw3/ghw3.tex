@@ -159,6 +159,36 @@ In conclusion, we have shown that for \(Y_t\) \(E[T] \in \mathcal{O}(nlog(n))\).
 	\(\sum_{m > y} \Pr[X_{t+1} = m| X_t = i]\E[T_y|X_0 = m]\) can be bounded by some large \(B\) for all \(i \leq y\). This insight allows us to apply Theorem 9.10, i.e. \(\E[T] = \E[T_y] + \mathcal{O}(1) \leq k \cdot n^2 + \mathcal{O}(1)\).
 \section*{Exercise 4}
 \subsection*{(a)}
+	Given a subgraph \(H\) of \(G\) on \(\nu\) vertices and \(\mu\) balls, we define \(X\) to be the number of edges in \(H\) and \(X_i\) to be the indicator variable telling us whether a particular edge \(i\) is included in \(H\). We know that there are \(2\mu\) edge candidates as each ball can have at most two edges and no edges between bins exist. The probability of an edge candidate being included in \(H\) is the probability of the bin from the edge in \(G\) being part of \(H\). This latter is the amount of bins in \(H\) divided by the amount of bins in \(G\). Hence:
+	\begin{align*}
+		\E[X] &= \sum_{i=1}^{2\mu} \E[X_i] \text{ (LOE)} \\
+		&= \sum_{i=1}^{2\mu} \frac{\nu - \mu}{n} = \frac{2\mu(\nu - \mu)}{n} \\
+		&\leq \frac{2 \nu^2}{n}
+	\end{align*}
+	We will now apply a Union Bound to make use of our bound for \(\E[X]\). Additionally, we note that there are at most \({n \choose \nu}{\nu \choose \mu}\) ways of constructing subgraphs \(H\) from \(G\) s.t. \(H\) has \(\nu\) vertices and \(\mu\) balls. 
+	\begin{align*}
+		& \Pr[\text{some subgraph has 3 more edges than vertices}] \\
+		&= \Pr[ \bigcup_{H \subseteq G} H \text{ has 3 more edges than vertices}] \\
+		&\leq \sum_{H \subseteq G}  \Pr[H \text { has at least }  \nu + 3 \text{ edges} | \text{H has } \nu \text{ vertices}]  \text{ (U.B.)} \\
+		&\leq \sum_{\nu = 1}^{1000 log(log(n))} \sum_{H \subseteq G}  \Pr[H \text { has at least } \nu + 3 \text{ edges} | \text{H has } \nu \text{ vertices}]\\
+		&\leq \sum_{\nu = 1}^{1000 log(log(n))} \sum_{\mu = 1}^{\nu} \sum_{H \subseteq G}  \Pr[H \text { has at least } \nu + 3 \text{ edges} | \text{H has } \nu \text{ vertices and } \mu \text{ balls}] \\
+		&\leq \sum_{\nu = 1}^{1000 log(log(n))} \sum_{\mu = 1}^{\nu} {n \choose \nu} {\nu \choose \mu} \Pr[\text {subgraph has at least } \nu + 3 \text{ edges} |  \text{has } \nu \text{ vertices and } \mu \text{ balls}]
+	\end{align*}
+	We can now use Markov's inequality saying that for \(X \geq 0, t >0\) \(\Pr[X \geq t] \leq \E[X] / t\). In this particular instance we get that:
+	 \begin{align*}
+	 	\Pr[\text{subgraph has }  \nu \text{ vertices, } \nu \text{ balls  and at least } \nu + 3 \text{ edges}] &\leq \frac{\E[X]}{\nu +3} \\
+	 	&\leq \frac{2 \nu ^2}{n (\nu +3)} \leq \frac{2\nu}{n}
+	\end{align*}
+	Including this bound in our essential probability, we obtain:
+	\begin{align*}
+		& \Pr[\text{some subgraph has 3 more edges than vertices}] \\
+		&\leq \sum_{\nu = 1}^{1000 log(log(n))} \sum_{\mu = 1}^{\nu} {n \choose \nu} {\nu \choose \mu} \frac{2\nu}{n} \\
+		&\leq \sum_{\nu = 1}^{1000 log(log(n))} \sum_{\mu = 1}^{\nu} n^\nu \nu^\mu \frac{2\nu}{n} \\
+		&\leq \sum_{\nu = 1}^{1000 log(log(n))} \nu n^\nu \nu^\nu \frac{2\nu}{n} \\
+		&\leq \frac{1}{n} \nu_{max} \nu_{max}  n^{\nu_{max}}  \nu_{max} ^{\nu_{max}}  2 \nu_{max} \text{ with } \nu_{max} = 1000 log(log(n)) \\
+		&\leq \frac{1}{n} \cdot \mathcal{O} (log(n)^{log(n)}) \\
+		& \to 0 \text{ for } n \to \infty
+	\end{align*}
 \subsection*{(b)}
 \subsection*{(c)}
 \begin{enumerate}[(i)]
