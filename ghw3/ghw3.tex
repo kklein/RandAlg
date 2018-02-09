@@ -59,7 +59,7 @@ Assuming \(\E[X] = \Theta(log(n))\) we can express the desired probability's neg
 &= \Pr[|X - \E[X]| > \alpha(n)\E[X]] \\
 & \leq \Pr[|X - \E[X]| \geq \alpha(n)\E[X]]
 \end{align*}
-We recognize a form from Lemma 8.2. In order to make use of it, we need to ensure its conditions are satisfied. Let \( \Omega = \Omega_1 \times \dots \times \Omega_N\) with \(N = n\) and each \(\Omega_i\) describing whether all of the \(n-1\) edges of vertex \(i\) are included or not. It follows directly that the effect of each dimension \(c_i\) is at most 1. Let \(\omega \in \Omega\) be a selection of such vertices and \(X(\omega)\) its maximum clique size. Setting \(r = X(\omega)\) trivially fulfills \(r \leq X(\omega)\). Let us define \(J\) to be the subset of \(\{1, \dots, n\}\) that indicates which vertices compose a \(X(\omega)\)-clique - arbitrarily in case of ties. Then, for each \(\omega' \in \Omega\) with \(\forall i \in J, w'_i = w_i\), the size of the maximum clique in \(\omega'\) can only increase, i.e. \(X(\omega') \geq X(\omega) = r\). Moreover:
+We recognize a form from Lemma 8.2. In order to make use of it, we need to ensure its conditions are satisfied. Let \( \Omega = \Omega_1 \times \dots \times \Omega_N\) with \(N = n\) and each \(\Omega_i\) describing whether all of the \(n-1\) edges of vertex \(i\) are included or not. It follows directly that the effect of each dimension \(c_i\) is at most 1. Let \(\omega \in \Omega\) be a selection of such vertices and \(X(\omega)\) its maximum clique size. Setting \(r = X(\omega)\) trivially fulfills \(r \leq X(\omega)\). Let us define \(J\) to be the subset of \(\{1, \dots, n\}\) that indicates which vertices compose a specific \(X(\omega)\)-clique - arbitrarily in case of ties. Then, for each \(\omega' \in \Omega\) with \(\forall i \in J, w'_i = w_i\), the size of the maximum clique in \(\omega'\) can only increase, i.e. \(X(\omega') \geq X(\omega) = r\). Moreover:
 \begin{align*}
  \sum_{i \in J} c_i^2 \leq \sum_{i \in J} 1 = |J| = X(\omega) = r
  \end{align*}
@@ -70,7 +70,7 @@ Thereby the necessary conditions hold true and Lemma 8.2.'s application yields:
 \end{align*}
 We define \(\alpha(n) = log(n) ^ {-1/4} \in o(1)\). 
 \begin{align*}
-\lim_{n \to \infty} \frac{\alpha(n)^2 log(n)}{1 + \alpha(n)} = \lim_{n \to \infty} \frac{log(n)}{\sqrt{log(n)} \cdot 1} = \lim_{n \to \infty} \sqrt{log(n)} \to \infty\\
+\lim_{n \to \infty} \frac{\alpha(n)^2 log(n)}{1 + \alpha(n)} = \lim_{n \to \infty} \frac{log(n)log(n)^{1/4}}{\sqrt{log(n)}} = \lim_{n \to \infty} log(n)^{3/4} \to \infty\\
 \end{align*}
 It follows directly that \(\Pr[X \notin  [(1 - \alpha(n)) \E[X], (1 + \alpha(n)) \E[X]]] \) tends to 0 for large enough \(n\).
 \begin{align*}
@@ -80,14 +80,14 @@ It follows directly that \(\Pr[X \notin  [(1 - \alpha(n)) \E[X], (1 + \alpha(n))
 \end{align*}
 
 \section*{Exercise 2}
-We define \((Y_t)_{t \in \mathbb{N}}\) to be the amount of 'missing mutants', i.e. \(n - |X_t|\). Hence we are looking to bind \(\E[T]\) for \(Y_t\) from above. We define \(u_t\) and \(v_t\) to be the \(u\) and \(v\) of the \(t\)-th round of the evolutionary process. As \(G = K_n\) and \(V_o = n/2\), we know that \(\Pr[u_t \in V_o] = \Pr[u_t \notin V_0] = 1/2\). \\
-The process' drawing process weighs vertices from \(V_t\) with \(r\). Given that \(Y_t = y\), there are \( |X_t| = n - y\) such vertices. Hence:
+We define \((Y_t)_{t \in \mathbb{N}}\) to be the amount of 'missing mutants', i.e. \(n - |X_t|\). Hence we are looking to bind \(\E[T]\) for \(Y_t\) from above. We define \(u_t\) and \(v_t\) to be the \(u\) and \(v\) of the \(t\)-th round of the evolutionary process. Note that \(G = K_n\) and \(V_0 = n/2\). \\
+The process' drawing process weighs vertices from \(V_t\) with \(r\). Given that \(Y_t = y\), there are \(n - y\) such vertices. Hence:
 \begin{align*}
 	\Pr[v_t \in X_t] = \frac{r(n-y)}{r(n-y) + 1 \cdot y} \text{ and } \Pr[v \notin X_t] = \frac{1 \cdot y}{r(n-y) + 1 \cdot y} 
 \end{align*}
 As \(u_t\) is drawn after \(v_t\), there are only \(n-1\) vertices to choose from. In particular, we observe that \(y\) is at most \(n/2\) because \(X_t\) will always include \(V_0\). Hence the size of \(X_t \setminus V_0\) is given by \(|X_t| - |V_0| = n - y - n/2 = n/2 - y\).
 \begin{align*}
-	\Pr[u_t \in X_t \setminus V_0] = \frac{n/2 - y}{n-1} \text{ and } \Pr[u_t \notin X_t] = \frac{y}{n-1}
+	\Pr[u_t \in X_t \setminus V_0 | v_t \notin X_t] = \frac{n/2 - y}{n-1} \text{ and } \Pr[u_t \notin X_t | v_t \in X_t ] = \frac{y}{n-1}
 \end{align*}
 Moreover, in order for \(Y_{t+1}\) to decrease over \(Y_t\), \(v_t\) has to be part of \(X_t\) and \(u_t\) be a node not yet contained in \(X_t\). Hence:
 \begin{align*}
@@ -98,7 +98,7 @@ Moreover, in order for \(Y_{t+1}\) to decrease over \(Y_t\), \(v_t\) has to be p
 On the other hand, for \(Y_{t+1}\) to increase over \(Y_t\),  \(v_t\) has to be excluded from \(X_t\) and \(u_t\) be already contained in \(X_t\). Hence:
 \begin{align*}
 	\Pr[Y_{t+1} = Y_t + 1] &= \Pr[v_t \notin X_t \wedge u_t \in X_t \setminus V_0] \\
-	&= \Pr[v_t \notin X_t] \Pr[u \in X_t \setminus V_0 | v_t \notin X_t] \\
+	&= \Pr[v_t \notin X_t] \Pr[u_t \in X_t \setminus V_0 | v_t \notin X_t] \\
 	&= \frac{y}{r(n-y) + y} \frac{n/2 - y}{n-1}
 \end{align*}
 We will now inspect the drift in order to find a fitting function \(g\) to apply Theorem 9.11. We observe that \(Y_t\) can only remain, increase by one or decrease by one.
@@ -120,14 +120,14 @@ We observe that \( \int_1^{n/2} \frac{c \cdot y}{n} dy =  \left[ c\cdot y log(n)
 \begin{align*}
 	\E[T] \leq \frac{c}{n} + c\cdot n log(n)
 \end{align*} 
-In conclusion, we have shown that for \(Y_t\) \(E[T] \in \mathcal{O}(nlog(n))\). According to the definition of \(Y_t\), it \(X_t = V\) if \(Y_t = 0\). Hence the bound on the process end also holds for \(X_t\).
+In conclusion, we have shown that for \(Y_t\) \(E[T] \in \mathcal{O}(nlog(n))\). According to the definition of \(Y_t\),  \(Y_t = 0\) implies \(X_t = V\). Hence the bound on the process end also holds for \(X_t\).
 
 \section*{Exercise 3}
 	Our goal is to apply Theorem 9.11, followed by Theorem 9.10. In particular, we define Theorem 9.11's \(C := y\), \(X_0 = n\) and 
 	\begin{align*}
 		g(i) = \begin{cases}
-			\frac{\sqrt i (x+y)}{xy}, i > y \\
-			0, i \leq y
+			\frac{\sqrt i (x+y)}{xy} & i > y \\
+			0 & i \leq y
 			\end{cases}
 	\end{align*}
 	Our main concern is to show that Theorem 9.11's inequality holds. In other words, we want to find a \(c > 0\), s.t. for all \(i \in \mathbb{N}, i>y\):
@@ -138,7 +138,7 @@ In conclusion, we have shown that for \(Y_t\) \(E[T] \in \mathcal{O}(nlog(n))\).
 		&\Leftrightarrow  \frac{x}{x+y} g(i-y) + \frac{y}{x+y}\frac{\sqrt{i+x}(x + y)}{xy} - \frac{\sqrt i (x+y)}{xy}\leq -c \\
 		&\Leftarrow \frac{x}{x+y}\frac{\sqrt{i-y}(x+y)}{xy} + \frac{\sqrt{i+x}}{x} - \frac{\sqrt i}{x} - \frac{\sqrt i}{y }\leq -c
 	\end{align*}
-	We can replace \(g(i-y)\) by assuming that \(i-y > y\) because it only makes the inequality harder to satisfy. We observe that the initial condition holds true if:
+	Even though \(g(i-y)\) could take on two different values according to the definition of \(g\), we were able to replace the former case of \(g\). In other words, we assumed \(i-y > y\) because it only makes the inequality harder to satisfy. We observe that the initial condition holds true if:
 	\begin{align*}
 		\frac{\sqrt{i+x} - \sqrt i }{x} - \frac{\sqrt i - \sqrt{i-y}}{y} \leq -c
 	\end{align*}
@@ -146,7 +146,7 @@ In conclusion, we have shown that for \(Y_t\) \(E[T] \in \mathcal{O}(nlog(n))\).
 	\begin{align*}
 		(\xi_1 - \xi_2) \frac{f'(\xi_1) - f'(\xi_2)}{\xi_1 - \xi_2} \leq -c
 	\end{align*} 
-	As our \(f'(i) = \frac{1}{2\sqrt i}\) is continuous for \(i > k\), we can apply the Mean Value Theorem once again. Hence there is a \(\xi_3 \in ]\xi_2, \xi_1[\) such that \(f''(\xi_3) = \frac{f'(\xi_1) - f'(\xi_2)}{\xi_1 - \xi_2} \), with \(f''(i) = - \frac{1}{4\sqrt{i^3}}\). A look into the intervals from which \(\xi_1\) and \(\xi_2\) originate, we know that \(\xi_1\) is less than \(i+x\) and \(\xi_2\) more than \(i-y\). Therefore \(\xi_1 - \xi_2\) can be bounded from above by \((i+x) - (i - y) = x + y\). Additionally, \(\xi_3 \leq \xi_1 \leq i +x \leq n +x\).  Combining this knowledge we can state that the initial condition is satisfied if:
+	As our \(f'(i) = \frac{1}{2\sqrt i}\) is continuous for \(i > k\), we can apply the Mean Value Theorem once again. Hence there is a \(\xi_3 \in ]\xi_2, \xi_1[\) such that \(f''(\xi_3) = \frac{f'(\xi_1) - f'(\xi_2)}{\xi_1 - \xi_2} \), with \(f''(i) = - \frac{1}{4\sqrt{i^3}}\). A look into the intervals from which \(\xi_1\) and \(\xi_2\) originate, unveils that \(\xi_1\) is less than \(i+x\) and \(\xi_2\) more than \(i-y\). Therefore \(\xi_1 - \xi_2\) can be bounded from above by \((i+x) - (i - y) = x + y\). Additionally, \(\xi_3 \leq \xi_1 \leq i +x \leq n +x\).  Combining this knowledge we can state that the initial condition is satisfied if:
 	\begin{align*}
 		&-(x + y)\frac{1}{4\sqrt{(n+x)^3}} \leq -c \\
 		&\Leftrightarrow c \leq (x + y)\frac{1}{4\sqrt{(n+x)^3}}
@@ -165,11 +165,11 @@ In conclusion, we have shown that for \(Y_t\) \(E[T] \in \mathcal{O}(nlog(n))\).
 		&= \sum_{i=1}^{2\mu} \frac{\nu - \mu}{n} = \frac{2\mu(\nu - \mu)}{n} \\
 		&\leq \frac{2 \nu^2}{n}
 	\end{align*}
-	We will now apply a Union Bound to make use of our bound for \(\E[X]\). Additionally, we note that there are at most \({n \choose \nu}{\nu \choose \mu}\) ways of constructing subgraphs \(H\) from \(G\) s.t. \(H\) has \(\nu\) vertices and \(\mu\) balls. 
+	We will now apply a Union Bound to make use of our bound for \(\E[X]\). Additionally, we note that there are at most \({n \choose \nu}{\nu \choose \mu}\) ways of constructing a subgraph \(H\) of \(G\) s.t. \(H\) has \(\nu\) vertices and \(\mu\) balls. 
 	\begin{align*}
 		& \Pr[\text{some subgraph has 3 more edges than vertices}] \\
 		&= \Pr[ \bigcup_{H \subseteq G} H \text{ has 3 more edges than vertices}] \\
-		&\leq \sum_{H \subseteq G}  \Pr[H \text { has at least }  \nu + 3 \text{ edges} | \text{H has } \nu \text{ vertices}]  \text{ (U.B.)} \\
+		&\leq \sum_{H \subseteq G}  \Pr[ H \text{ has 3 more edges than vertices}]  \text{ (U.B.)} \\
 		&\leq \sum_{\nu = 1}^{1000 log(log(n))} \sum_{H \subseteq G}  \Pr[H \text { has at least } \nu + 3 \text{ edges} | \text{H has } \nu \text{ vertices}]\\
 		&\leq \sum_{\nu = 1}^{1000 log(log(n))} \sum_{\mu = 1}^{\nu} \sum_{H \subseteq G}  \Pr[H \text { has at least } \nu + 3 \text{ edges} | \text{H has } \nu \text{ vertices and } \mu \text{ balls}] \\
 		&\leq \sum_{\nu = 1}^{1000 log(log(n))} \sum_{\mu = 1}^{\nu} {n \choose \nu} {\nu \choose \mu} \Pr[\text {subgraph has at least } \nu + 3 \text{ edges} |  \text{has } \nu \text{ vertices and } \mu \text{ balls}]
@@ -190,6 +190,10 @@ In conclusion, we have shown that for \(Y_t\) \(E[T] \in \mathcal{O}(nlog(n))\).
 		& \to 0 \text{ for } n \to \infty
 	\end{align*}
 \subsection*{(b)}
+
+First, let's observe that the if the whole whitness graph is a tree, there are at least 8 other balls of height \(h_b - 4\). Moreover, if ball of height \(h_b\) is the \(h_b\)-th ball of bin \(u\), than those 8 are distributed over 4 different subgraphs rooted in balls neighboring \(u\). Thanks to (a), some of those 8 might not be roots of trees, but other are.\\
+Let us construct the witness graph by starting off with a full witness tree of correct maximal ball height. We now obtain the actual witness graph by merging bin vertices each time bins coincide. Note that this merging operation introduces a cycle each. In order for all graphs rooted in balls of height \(h_b -4\) to violate the tree property, at least 4 cycles have to exist. However, assuming (a), there are at most 3 cycles. Hence there will be at least one ball of height \(h_b-4\) being the root of a witness subgraph, that has no cycle, i.e. that is a tree.
+
 \subsection*{(c)}
 \begin{enumerate}[(i)]
 	\item
@@ -225,4 +229,30 @@ In conclusion, we have shown that for \(Y_t\) \(E[T] \in \mathcal{O}(nlog(n))\).
 See (i).
 \end{enumerate}
 \subsection*{(d)}
+	For \(T\) to be a legitimate witness subgraph of \(G\), it has to fulfill (at least) the follwing conditions:
+	\begin{itemize}
+	\item Solid lines:
+		Each ball excluding the root has to have the bin it is connected to with a solid line in \(G\) as one of its two neighboring bins in \(T\). This holds with probability at most \((\frac{2}{n})^{\mu -1}\), as the balls are thrown independently of each other.
+	\item Dashed lines: Each bin has to have a dashed line to the vertex in which it was rejected as one of the two options. This holds with probability at most \((\frac{1}{n})^{\nu}\).
+	\item Leaves: Given that we know for each ball which bin it belongs to (solid line), we need to ensure for each leaf independently that it is the 6th ball of said bin. This probability is less than \((\frac{1}{5})^t\).
+	\end{itemize}
+	Combining those necessary requirements, we get:
+	\begin{align*}
+		&\Pr[T \text{ is a witness subgraph of } G] \\
+		&\leq \Pr[T \text{has same solid and dashed lines as \(G\) and leaves are correct}] \\
+		&\leq \Pr[T \text{'s leaves are correct} | T \text{ has same solid and dashed lines as } G] \\
+		&\ \ \ \ \  \cdot\Pr [T \text{ has same solid and dashed lines as } G] \\
+		&\leq (\frac{1}{5})^t (\frac{2}{n})^{\mu -1} (\frac{1}{n})^{\nu} \\
+		&\leq  (\frac{1}{5})^t 2^{\mu} (\frac{1}{n})^{\nu + \mu -1}
+	\end{align*}
+\subsection*{(e)}
+	(b) tells us that if the maximum load \(h_b + 4\) is very high then we can find a ball with the very similar same, off by a small constant factor, height \(h_b\) which is the root of a witness subgraph being a tree. This, in turn, allows us to use the learnings from (c) and (d). (d) tells us that given \(\mu, \nu, t\), the probability of a particular subgraph being a witness tree is at most \((\frac{1}{5})^t 2^{\mu} (\frac{1}{n})^{\nu + \mu -1}\). Note that there are at most \({n \choose \mu}\) ways of chosing the balls and \({n \choose \nu}\) ways of chosing the bins. Hence the expected number of witness trees with parameters  \(\mu, \nu, t\) is by linearity of expectation at most \({n \choose \mu} {n \choose \nu}(\frac{1}{5})^t 2^{\mu} (\frac{1}{n})^{\nu + \mu -1}\). Using \({n \choose \mu} \leq n^{\mu}\) and \({n \choose \nu} \leq n^{\nu}\), we get:
+	\begin{align*}
+		&n^{\mu} n^{\nu}(\frac{1}{5})^t 2^{\mu} (\frac{1}{n})^{\nu + \mu -1} = n (\frac{1}{5})^t 2^{\mu}
+	\end{align*}
+	Let's recall that for trees, we can express \(\mu, \nu, t\) as a function of the height \(h_b\).
+	\begin{align*}
+		n (\frac{1}{5})^{2^{h_b - 7}} 2^{2^{h_b - 6}} \in \mathcal{O} (n (2/5)^{2^{h_b}})
+	\end{align*}
+	For \(h_b = C_1 log(log(n)) + C_2\), we note that \(C_2\) is asymptotically irrelevant and simplify to \(\mathcal{O} (n (2/5)^{2^{C_1 log(log(n))}}) = \mathcal{O} (n (2/5)^{log(n)^{C_1}}) = \mathcal{O} (n (2/5)^{C_1log(n)})\). We can always find a \(C_1\) such that the second term goes to 0 faster than \(n^{-1}\), independent of n. For such a \(C_1\), the expectation goes to zero and the application of the First Moment Method tells us that the probability that such a tree exists for heights greater than our \(h_b\) goes to 0. As we have argued, a high load would imply a tree with almost the same height. As the latter doesn't exist whp, the former doesn't either.
 \end{document}
